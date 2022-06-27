@@ -26,3 +26,14 @@ python app.py
 ```
 
 and visit http://127.0.0.1:8050/.
+
+
+## Changes to chatbot
+
+The intention for this proof of concept is to build a chatbot that would help Disney guest (current or potential) gather more information regarding the different theme parks.
+
+The nameless chatbot was given a name and as well as different styling.
+
+
+## Future Improvement
+If given more time the chatbot would be given multilingual abilities. Such as being able to converse in Spanish, French and Chinese. As well as being able to view the different rides avaliable at the user selected theme park. 
