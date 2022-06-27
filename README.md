@@ -30,7 +30,7 @@ and visit http://127.0.0.1:8050/.
 
 ## Changes to chatbot
 
-The intention for this proof of concept is to build a chatbot that would help Disney guest (current or potential) gather more information regarding the different theme parks.
+The intention for this proof of concept is to build a chatbot that would help Disney (current or potential) guest gather more information regarding the different theme parks.
 
 The nameless chatbot was given a name and as well as different styling.
 
