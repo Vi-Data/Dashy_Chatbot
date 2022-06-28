@@ -29,10 +29,9 @@ and visit http://127.0.0.1:8050/.
 
 ## Changes to chatbot
 
-The intention for this proof of concept is to build a chatbot that would help Disney (current or potential) guest gather more information regarding the different theme parks.
+The intention for Dashy the chatbot is to help Disney (current or potential) guest gather more information regarding the different theme parks as well as organize and plan a trip to the happiest place on earth. 
 
-The nameless chatbot was given a name and as well as different styling.
-
+This dash application allows for users to talk to a chatbot. Select from a list of Disney Parks and create a to-do list. 
 
 ## Future Improvement
-If given more time the chatbot would be given multilingual abilities. Such as being able to converse in Spanish, French and Chinese. As well as being able to view the different rides avaliable at the user selected theme park. 
+If given more time the chatbot would be given multilingual abilities. Such as being able to converse in Spanish, French and Chinese. As well as being able to view the different rides avaliable at the user selected theme park as well as being able to retrieive a map of each park. 
