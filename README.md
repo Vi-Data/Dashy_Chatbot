@@ -34,5 +34,7 @@ The intention for Dashy the chatbot is to help Disney (current or potential) gue
 
 This dash application allows for users to talk to a chatbot. Select from a list of Disney Parks and create a to-do list. 
 
-## Future Improvement
-If given more time the chatbot would be given multilingual abilities. Such as being able to converse in Spanish, French and Chinese. As well as being able to view the different rides avaliable at the user selected theme park as well as being able to retrieive a map of each park. 
+## Future Development
+If given more time the chatbot would be given multilingual abilities. Such as being able to converse in Spanish, French and Chinese. As well as accuracy of Disney's Parks information such as avaliable ride and or more accurate Park Hours as that information is more dynamic. By chosing to train model on more Disney specific dataset, chat bot could be improved. 
+The dash app could be improved by providing guest with links and maps to the Disney Parks. 
+
