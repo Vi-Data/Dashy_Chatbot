@@ -119,7 +119,7 @@ app.layout = dbc.Container(
         controls,
         html.Hr(),
         html.H6("Select the Disney Park from Drop Down List"),
-        dcc.Dropdown(list(all_options.keys()), id='countries-radio',),
+        dcc.Dropdown(list(all_options.keys()), id='park_rides',),
          html.Div('Things I would like to do at Disney'),
         dcc.Input(id="new-item"),
         html.Button("Add", id="add"),
