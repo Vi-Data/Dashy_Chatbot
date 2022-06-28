@@ -3,8 +3,9 @@
 
 This app lets you chat with [DialoGPT](https://huggingface.co/transformers/model_doc/dialogpt.html), a chatbot based on GPT that was trained on 147M comments+replies from Reddit. The model was developed by [Microsoft Research](https://github.com/microsoft/DialoGPT), and it is hosted on [Huggingface's model repository](https://huggingface.co/microsoft/DialoGPT-large).
 
-![Dashy_Demo_Pic](https://user-images.githubusercontent.com/108215228/176068851-4ed75c73-0348-4452-b69d-e9c74e46518a.gif)
+![Dashy_Disney_Demo](https://github.com/Vi-Data/NLP_BOT/blob/main/Dashy_Disney_Demo.gif)
 ## Instructions
+
 
 To get started, first clone this repo:
 ```
