@@ -97,7 +97,7 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.YETI])
 ### end of layout edits
 
 server = app.server
-#Dictionary containing all disney parks and rides
+#Dictionary containing Disney parks and rides
 
 all_options = {
     'Walt Disney World Resort': ['Dumbo the Flying Elephant', 'The Seas with Nemo & Friends', 'Turtle Talk with Crush'],
