@@ -1,12 +1,15 @@
+#Libraries and dependencies 
 import time
-
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output, State , MATCH, ALL
+from dash_bootstrap_templates import load_figure_template
 from transformers import AutoModelWithLMHead, AutoTokenizer
 import torch
+import plotly.express as px
+
 
 
 # device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -59,7 +62,7 @@ conversation = html.Div(
     style={
         "width": "80%",
         "max-width": "800px",
-        "height": "70vh",
+        "height": "60vh",
         "margin": "auto",
         "overflow-y": "auto",
     },
@@ -69,30 +72,75 @@ conversation = html.Div(
 controls = dbc.InputGroup(
     style={"width": "80%", "max-width": "800px", "margin": "auto"},
     children=[
-        dbc.Input(id="user-input", placeholder="Write to the chatbot...", type="text"),
+        dbc.Input(id="user-input", placeholder="Send a messsage to Dashy", type="text"),
         dbc.InputGroupAddon(dbc.Button("Submit", id="submit"), addon_type="append",),
     ],
 )
 
+####begining of Layout edits
+df = px.data.gapminder()
 
-# Define app
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+templates = [
+    "bootstrap",
+    "minty",
+    "pulse",
+    "flatly",
+    "quartz",
+    "cyborg",
+    "darkly",
+    "vapor",
+]
+
+load_figure_template(templates)
+
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.YETI])
+### end of layout edits
+
 server = app.server
+#Dictionary containing all disney parks and rides
 
+all_options = {
+    'Walt Disney World Resort': ['Dumbo the Flying Elephant', 'The Seas with Nemo & Friends', 'Turtle Talk with Crush'],
+    'Disneyland Resort': [u'Autotopia', 'Space Mountain', 'Soarin'],
+    'Tokyo Disney Resort': [u'Toy Story Mania', 'Splash Mountain', 'Raging Spirits'],
+    'Disneyland Paris': [u'Adventure Isle', 'Autotopia', 'Big Thunder Mountain'],
+    'Hong Kong Disneyland Resort': [u'Mystic Manor', 'Iron Man Experience', 'Fantasy Gardens'],
+    'Shanghai Disney Resort': [u'JetPacks', 'Roaring Rapids', 'Tron Lightcycle Power Run'],
+}
 
-# Define Layout
 app.layout = dbc.Container(
     fluid=True,
     children=[
-        html.H1("Dash Chatbot (with DialoGPT)"),
+        html.H1("Chat with Dashy"),
+        html.H6("Hi! I am Dashy a chatbot based on GPT that was trained on 147 million comments+ from Reddit"),
         html.Hr(),
         dcc.Store(id="store-conversation", data=""),
         conversation,
         controls,
-    ],
-)
+        html.Hr(),
+        html.H6("Select the Disney Park from Drop Down List"),
+        dcc.Dropdown(list(all_options.keys()), id='countries-radio',),
+         html.Div('Things I would like to do at Disney'),
+        dcc.Input(id="new-item"),
+        html.Button("Add", id="add"),
+        html.Button("Clear Done", id="clear-done"),
+        html.Div(id="list-container"),
+        html.Div(id="totals")
 
 
+
+        ])
+
+
+
+style_todo = {"display": "inline", "margin": "10px"}
+style_done = {"textDecoration": "line-through", "color": "#888"}
+style_done.update(style_todo)
+
+
+
+
+## callback for backend of chatbot
 @app.callback(
     Output("display-conversation", "children"), [Input("store-conversation", "data")]
 )
@@ -130,7 +178,70 @@ def run_chatbot(n_clicks, n_submit, user_input, chat_history):
     chat_history = tokenizer.decode(chat_history_ids[0])
 
     return chat_history, ""
+#### Call back for todo list
+@app.callback(
+    [
+        Output("list-container", "children"),
+        Output("new-item", "value")
+    ],
+    [
+        Input("add", "n_clicks"),
+        Input("new-item", "n_submit"),
+        Input("clear-done", "n_clicks")
+    ],
+    [
+        State("new-item", "value"),
+        State({"index": ALL}, "children"),
+        State({"index": ALL, "type": "done"}, "value")
+    ]
+)
+def edit_list(add, add2, clear, new_item, items, items_done):
+    triggered = [t["prop_id"] for t in dash.callback_context.triggered]
+    adding = len([1 for i in triggered if i in ("add.n_clicks", "new-item.n_submit")])
+    clearing = len([1 for i in triggered if i == "clear-done.n_clicks"])
+    new_spec = [
+        (text, done) for text, done in zip(items, items_done)
+        if not (clearing and done)
+    ]
+    if adding:
+        new_spec.append((new_item, []))
+    new_list = [
+        html.Div([
+            dcc.Checklist(
+                id={"index": i, "type": "done"},
+                options=[{"label": "", "value": "done"}],
+                value=done,
+                style={"display": "inline"},
+                labelStyle={"display": "inline"}
+            ),
+            html.Div(text, id={"index": i}, style=style_done if done else style_todo)
+        ], style={"clear": "both"})
+        for i, (text, done) in enumerate(new_spec)
+    ]
+    return [new_list, "" if adding else new_item]
 
 
+@app.callback(
+    Output({"index": MATCH}, "style"),
+    Input({"index": MATCH, "type": "done"}, "value")
+)
+def mark_done(done):
+    return style_done if done else style_todo
+
+
+@app.callback(
+    Output("totals", "children"),
+    Input({"index": ALL, "type": "done"}, "value")
+)
+def show_totals(done):
+    count_all = len(done)
+    count_done = len([d for d in done if d])
+    result = "{} of {} items completed".format(count_done, count_all)
+    if count_all:
+        result += " - {}%".format(int(100 * count_done / count_all))
+    return result
+
+####
 if __name__ == "__main__":
     app.run_server(debug=True)
+
